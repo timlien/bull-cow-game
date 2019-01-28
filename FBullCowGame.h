@@ -7,8 +7,6 @@
 #ifndef SECTION_02_FBULLCOWGAME_H
 #define SECTION_02_FBULLCOWGAME_H
 
-#endif //SECTION_02_FBULLCOWGAME_H
-
 using FString = std::string;
 using int32 = int;
 
@@ -47,7 +45,11 @@ public:
 
 private:
     int32 MyCurrentTry;
-    int32 MyMaxTries;
     FString MyHiddenWord;
     bool bGameWon;
+
+    bool IsIsogram(FString) const;
+    bool IsLowercase(FString) const;
 };
+
+#endif //SECTION_02_FBULLCOWGAME_H

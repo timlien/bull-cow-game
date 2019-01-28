@@ -78,7 +78,7 @@ FText GetGuess()
 
     do
     {
-        std::cout << "Try " << CurrentTry << ". " << "Enter your guess: ";
+        std::cout << "Try " << CurrentTry << " of " << Game.GetMaxTries() << ". " << "Enter your guess: ";
         std::getline(std::cin, Guess);
 
         Status = Game.ValidateGuess(Guess);

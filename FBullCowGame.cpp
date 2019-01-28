@@ -3,6 +3,9 @@
 //
 
 #include "FBullCowGame.h"
+#include <map>
+
+#define FMap std::map
 
 FBullCowGame::FBullCowGame()
 {
@@ -11,7 +14,7 @@ FBullCowGame::FBullCowGame()
 
 int32 FBullCowGame::GetMaxTries() const
 {
-    return MyMaxTries;
+    return GetHiddenWordLength() * 2;
 }
 
 int32 FBullCowGame::GetCurrentTry() const
@@ -26,9 +29,6 @@ bool FBullCowGame::IsGameWon() const
 
 void FBullCowGame::Reset()
 {
-    constexpr int32 MAX_TRIES = 5;
-    MyMaxTries = MAX_TRIES;
-
     constexpr int32 INITIAL_TRY = 1;
     MyCurrentTry = INITIAL_TRY;
 
@@ -40,15 +40,15 @@ void FBullCowGame::Reset()
 
 EWordStatus FBullCowGame::ValidateGuess(FString Guess) const
 {
-    if (false)
+    if (!IsIsogram(Guess))
     {
-
+        return EWordStatus::Not_Isogram;
     }
-    else if (false)
+    else if (!IsLowercase(Guess))
     {
-
+        return EWordStatus::Not_Lowercase;
     }
-    else if (Guess.length() != GetHiddenWordLength() )
+    else if (Guess.length() != GetHiddenWordLength())
     {
         return EWordStatus::Mismatched_Length;
     }
@@ -94,5 +94,44 @@ FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
 int32 FBullCowGame::GetHiddenWordLength() const
 {
     return (int32) MyHiddenWord.length();
+}
+
+bool FBullCowGame::IsIsogram(FString Word) const
+{
+    bool isogram = true;
+
+    FMap<char, bool> LetterSeen;
+    for (char Letter : Word)
+    {
+        Letter = static_cast<char>(tolower(Letter));
+        if (LetterSeen[Letter])
+        {
+            isogram = false;
+            break;
+        }
+        else
+        {
+            LetterSeen[Letter] = true;
+        }
+    }
+
+
+    return isogram;
+}
+
+bool FBullCowGame::IsLowercase(FString Word) const
+{
+    bool IsLowercase = true;
+
+    for (auto Letter : Word)
+    {
+        if (Letter == ' ' || Letter == '\0' || !islower(Letter))
+        {
+            IsLowercase = false;
+            break;
+        }
+    }
+
+    return IsLowercase;
 }
 
